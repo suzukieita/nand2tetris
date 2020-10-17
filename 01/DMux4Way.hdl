@@ -16,5 +16,23 @@ CHIP DMux4Way {
     OUT a, b, c, d;
 
     PARTS:
-    // Put your code here:
+    // aの結果 sel=00
+    Not(in=sel[0], out=ai1);
+    Not(in=sel[1], out=ai2);
+    And(a=ai1, b=ai2, out=ai3);
+    And(a=in, b=ai3, out=a);
+
+    // bの結果 sel=01
+    Not(in=sel[1], out=bi1);
+    And(a=sel[0], b=bi1, out=bi2);
+    And(a=in, b=bi2, out=b);
+
+    // cの結果 sel=10
+    Not(in=sel[0], out=ci1);
+    And(a=sel[1], b=ci1, out=ci2);
+    And(a=in, b=ci2, out=c);
+
+    // dの結果 sel=11
+    And(a=sel[0], b=sel[1], out=di1);
+    And(a=in, b=di1, out=d);
 }
