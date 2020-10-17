@@ -14,5 +14,12 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // aの結果
+    Not(in=sel, out=c1);
+    And(a=a, b=c1, out=c2);
+    // bの結果
+    And(a=b, b=sel, out=d);
+
+    // aの結果とbの結果を合成
+    Or(a=c2, b=d, out=out);
 }
