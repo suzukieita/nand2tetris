@@ -1,0 +1,79 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux8Way {
+    IN a, b, c, d, e, f, g, h, sel[3];
+    OUT out;
+
+    PARTS:
+    // aの結果 sel=000
+    Not(in=sel[0], out=i1);
+    Not(in=sel[1], out=i2);
+    Not(in=sel[2], out=i3);
+    And(a=i1, b=i2, out=i4);
+    And(a=i4, b=i3, out=i5);
+    And(a=a, b=i5, out=ares);
+
+    // bの結果 sel=001
+    Not(in=sel[1], out=h1);
+    Not(in=sel[2], out=h2);
+    And(a=h1, b=h2, out=h3);
+    And(a=h3, b=sel[0], out=h4);
+    And(a=b, b=h4, out=bres);
+
+    // cの結果 sel=010
+    Not(in=sel[0], out=ci1);
+    Not(in=sel[2], out=ci2);
+    And(a=ci1, b=ci2, out=ci3);
+    And(a=ci3, b=sel[1], out=ci4);
+    And(a=c, b=ci4, out=cres);
+
+    // dの結果 sel=011
+    Not(in=sel[2], out=di1);
+    And(a=di1, b=sel[0], out=di2);
+    And(a=ci2, b=sel[1], out=di3);
+    And(a=d, b=di3, out=dres);
+
+    // eの結果 sel=100
+    Not(in=sel[0], out=ei1);
+    Not(in=sel[1], out=ei2);
+    And(a=ei1, b=ei2, out=ei3);
+    And(a=ei3, b=sel[2], out=ei4);
+    And(a=e, b=ei4, out=eres);
+
+    // fの結果 sel=101
+    Not(in=sel[1], out=fi1);
+    And(a=fi1, b=sel[0], out=fi2);
+    And(a=fi2, b=sel[2], out=fi3);
+    And(a=f, b=fi3, out=fres);
+
+    // gの結果 sel=110
+    Not(in=sel[0], out=gi1);
+    And(a=gi1, b=sel[1], out=gi2);
+    And(a=gi2, b=sel[2], out=gi3);
+    And(a=g, b=gi3, out=gres);
+
+    // hの結果 sel=111
+    And(a=sel[0], b=sel[1], out=hi1);
+    And(a=hi1, b=sel[2], out=hi2);
+    And(a=h, b=hi2, out=hres);
+
+    // 結果を合成
+    Or(a=ares, b=bres, out=res1);
+    Or(a=res1, b=cres, out=res2);
+    Or(a=res2, b=dres, out=res3);
+    Or(a=res3, b=eres, out=res4);
+    Or(a=res4, b=fres, out=res5);
+    Or(a=res5, b=gres, out=res6);
+    Or(a=res6, b=hres, out=out);
+}
