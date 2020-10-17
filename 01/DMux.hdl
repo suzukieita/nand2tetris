@@ -14,5 +14,9 @@ CHIP DMux {
     OUT a, b;
 
     PARTS:
-    // Put your code here:
+    // aの結果
+    Not(in=sel, out=c1);
+    And(a=in, b=c1, out=a);
+    // bの結果
+    And(a=in, b=sel, out=b);
 }
